@@ -1,0 +1,53 @@
+# script type
+{
+    topic_types: [
+        {
+            value: "Script Name",
+            uri: "dmx.script.name",
+            data_type_uri: "dm4.core.text",
+            index_mode_uris: ["dm4.core.fulltext"]
+        },
+        {
+            value: "Script Code",
+            uri: "dmx.script.code",
+            data_type_uri: "dm4.core.text"
+        },
+        {
+            value: "Script",
+            uri: "dmx.script",
+            data_type_uri: "dm4.core.composite",
+            label_config: [ "dmx.script.name" ],
+            assoc_defs: [
+                {
+                    part_type_uri:         "dmx.script.name",
+                    assoc_type_uri:        "dm4.core.composition_def",
+                    part_cardinality_uri:  "dm4.core.one"
+                },
+                {
+                    part_type_uri:         "dmx.script.code",
+                    assoc_type_uri:        "dm4.core.composition_def",
+                    part_cardinality_uri:  "dm4.core.one",
+                    view_config_topics: [
+                        {
+                            type_uri: "dm4.webclient.view_config",
+                            composite: {
+                                dm4.webclient.editable: true,
+                                dm4.webclient.simple_renderer_uri: "dmx.script.code.renderer"
+                            }
+                        }
+                    ]
+                }
+            ],
+            view_config_topics: [
+                {
+                    type_uri: "dm4.webclient.view_config",
+                    composite: {
+                        dm4.webclient.icon: "/org.digitalmemex.dmx-webclient/images/media_scripts.png",
+                        dm4.webclient.add_to_create_menu: true,
+                        dm4.webclient.is_searchable_unit: true
+                    }
+                }
+            ]
+        }
+    ]
+}

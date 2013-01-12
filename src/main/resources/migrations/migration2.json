@@ -1,0 +1,12 @@
+# bootstrap scripts
+{
+    topics: [
+        { # a simple hello example
+            type_uri: "dmx.script",
+            composite: {
+                dmx.script.name: "hello",
+                dmx.script.code: "alert('hello DigitalMemeX')"
+            }
+        }
+    ]
+}
