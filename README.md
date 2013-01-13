@@ -1,8 +1,8 @@
 # Digital MemeX Webclient
 
-dynamic JavaScript client
+dynamic JavaScript client on /org.digitalmemex.dmx-webclient/index.html
 
-create Script topics and eval them on /org.digitalmemex.dmx-webclient/index.html
+reveal the webclient.js script topic in the DM4 webclient and start coding
 
 ## Requirements
 
