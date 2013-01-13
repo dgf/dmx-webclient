@@ -1,21 +1,10 @@
-(function($, Dm4Client) {
+/*global requirejs, $, RESTClient */
 
-    var dm4 = new Dm4Client('core')
+requirejs.config({ baseUrl: '/dmx/script' })
 
-    function getScripts() {
-        return dm4.request('GET', '/dmx/scripts').items
-    }
-
-    $(function() {
-        var scripts = getScripts(), $scripts = $('#scripts')
-
-        $.each(scripts, function(s, script) {
-            $scripts.append($('<li>').text(script.name).data('code', script.code))
-        })
-
-        $scripts.on('click', 'li', function() {
-            eval($(this).data('code'))
-        })
+$(function() { // jQuery ready => start up
+    requirejs(['webclient'], function (dmx) {
+        // TODO wrap and export DM4 rest client as dm4rest
+        dmx.start(new RESTClient('core'))
     })
-
-})(jQuery, RESTClient)
+})

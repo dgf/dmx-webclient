@@ -1,19 +1,17 @@
 package org.digitalmemex.webclient;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import de.deepamehta.core.DeepaMehtaObject;
 import de.deepamehta.core.RelatedTopic;
-import de.deepamehta.core.ResultSet;
 import de.deepamehta.core.Topic;
+import de.deepamehta.core.model.SimpleValue;
 import de.deepamehta.core.osgi.PluginActivator;
 import de.deepamehta.core.service.ClientState;
 import de.deepamehta.core.service.PluginService;
@@ -40,17 +38,14 @@ public class DmxWebclientPlugin extends PluginActivator {
     private boolean isInitialized;
 
     @GET
-    @Path("/scripts")
-    @Produces(MediaType.APPLICATION_JSON)
-    public ResultSet<Script> getScripts(@HeaderParam("Cookie") ClientState cookie) {
-        ResultSet<RelatedTopic> topics = dms.getTopics(SCRIPT_TYPE, true, 0, cookie);
-        Set<Script> scripts = new HashSet<Script>();
-        for (RelatedTopic script : topics) {
-            scripts.add(new Script(//
-                    script.getCompositeValue().getString(SCRIPT_NAME), //
-                    script.getCompositeValue().getString(SCRIPT_CODE)));
-        }
-        return new ResultSet<Script>(scripts.size(), scripts);
+    @Path("/script/{name}")
+    @Produces("text/javascript")
+    public String getScript(@PathParam("name") String name, @HeaderParam("Cookie") ClientState cookie) {
+        log.info("load DMX script " + name);
+        Topic scriptName = dms.getTopic(SCRIPT_NAME, new SimpleValue(name), true, cookie);
+        RelatedTopic script = scriptName.getRelatedTopic("dm4.core.composition", //
+                "dm4.core.part", "dm4.core.whole", SCRIPT_TYPE, true, false, cookie);
+        return script.getCompositeValue().getString(SCRIPT_CODE);
     }
 
     @Override

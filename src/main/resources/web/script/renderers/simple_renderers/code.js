@@ -6,7 +6,7 @@
 
         render_info : function(model, $parent) {
             dm4c.render.field_label(model, $parent)
-            $parent.append(model.value)
+            $parent.append($('<pre>').text(model.value))
         },
 
         render_form : function(model, $parent) {
@@ -15,7 +15,7 @@
                 $editor = $('<div>').attr('id', editId).text(model.value)
 
             // style and append it
-            $editor.attr('style', 'position: relative; width: 97%; min-height: 137px;')
+            $editor.attr('style', 'position: relative; width: 97%; min-height: 237px;')
             $parent.append($editor)
 
             // configure editor

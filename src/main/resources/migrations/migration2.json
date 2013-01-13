@@ -1,11 +1,25 @@
 # bootstrap scripts
 {
-    topics: [
-        { # a simple hello example
+    topics: [ # a simple interaction example
+        { # an input
             type_uri: "dmx.script",
             composite: {
-                dmx.script.name: "hello",
-                dmx.script.code: "alert('hello DigitalMemeX')"
+                dmx.script.name: "input.js",
+                dmx.script.code: "define(function() {\n    var $input = $('<input>')\n    return {\n        getValue: function() { return $input.val() },\n        show: function($parent) { $parent.append($input) }\n    }\n})"
+            }
+        },
+        { # a button that alerts the input value on click
+            type_uri: "dmx.script",
+            composite: {
+                dmx.script.name: "call.js",
+                dmx.script.code: "define(['input'], function(input) {\n    var $call = $('<button>').text('click me').click(function() {\n        alert('hi ' + input.getValue())\n    })\n    return {\n        show: function($parent) { $parent.append($call) }\n    }\n})"
+            }
+        },
+        { # webclient startup
+            type_uri: "dmx.script",
+            composite: {
+                dmx.script.name: "webclient.js",
+                dmx.script.code: "define(['input', 'call'], function(input, call) {\n    var $dmx = $('#dmx')\n    return {\n        start: function() {\n            input.show($dmx)\n            call.show($dmx)\n        }\n    }\n})"
             }
         }
     ]

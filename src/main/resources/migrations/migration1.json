@@ -5,7 +5,7 @@
             value: "Script Name",
             uri: "dmx.script.name",
             data_type_uri: "dm4.core.text",
-            index_mode_uris: ["dm4.core.fulltext"]
+            index_mode_uris: [ "dm4.core.key" ]
         },
         {
             value: "Script Code",
