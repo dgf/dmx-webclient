@@ -25,6 +25,8 @@ import de.deepamehta.plugins.accesscontrol.service.AccessControlService;
 @Path("/dmx")
 public class DmxWebclientPlugin extends PluginActivator {
 
+    public static final String APP_TYPE = "dmx.app";
+
     public static final String SCRIPT_TYPE = "dmx.script";
 
     public static final String SCRIPT_NAME = "dmx.script.name";
@@ -70,7 +72,7 @@ public class DmxWebclientPlugin extends PluginActivator {
     }
 
     private void checkACLsOfMigration() {
-        for (String typeUri : new String[] { SCRIPT_TYPE }) {
+        for (String typeUri : new String[] { APP_TYPE, SCRIPT_TYPE }) {
             checkACLsOfTopics(typeUri);
         }
     }

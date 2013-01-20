@@ -1,16 +1,17 @@
-# script type
+# application and script types
 {
     topic_types: [
         {
             value: "Script Name",
             uri: "dmx.script.name",
             data_type_uri: "dm4.core.text",
-            index_mode_uris: [ "dm4.core.key" ]
+            index_mode_uris: [ "dm4.core.key", "dm4.core.fulltext" ]
         },
         {
             value: "Script Code",
             uri: "dmx.script.code",
-            data_type_uri: "dm4.core.text"
+            data_type_uri: "dm4.core.text",
+            index_mode_uris: [ "dm4.core.fulltext" ]
         },
         {
             value: "Script",
@@ -43,6 +44,72 @@
                     type_uri: "dm4.webclient.view_config",
                     composite: {
                         dm4.webclient.icon: "/org.digitalmemex.dmx-webclient/images/media_scripts.png",
+                        dm4.webclient.add_to_create_menu: true,
+                        dm4.webclient.is_searchable_unit: true
+                    }
+                }
+            ]
+        },
+        {
+            value: "Application Name",
+            uri: "dmx.app.name",
+            data_type_uri: "dm4.core.text",
+            index_mode_uris: [ "dm4.core.fulltext" ]
+        },
+        {
+            value: "Application Path",
+            uri: "dmx.app.path",
+            data_type_uri: "dm4.core.text",
+            index_mode_uris: [ "dm4.core.fulltext" ]
+        },
+        {
+            value: "Application Description",
+            uri: "dmx.app.description",
+            data_type_uri: "dm4.core.html",
+            index_mode_uris: [ "dm4.core.fulltext" ]
+        },
+        {
+            value: "Application",
+            uri: "dmx.app",
+            data_type_uri: "dm4.core.composite",
+            label_config: [ "dmx.app.name" ],
+            assoc_defs: [
+                {
+                    part_type_uri:         "dmx.app.name",
+                    assoc_type_uri:        "dm4.core.composition_def",
+                    part_cardinality_uri:  "dm4.core.one"
+                },
+                {
+                    part_type_uri:         "dmx.app.path",
+                    assoc_type_uri:        "dm4.core.composition_def",
+                    part_cardinality_uri:  "dm4.core.one"
+                },
+                {
+                    part_type_uri:         "dmx.app.description",
+                    assoc_type_uri:        "dm4.core.composition_def",
+                    part_cardinality_uri:  "dm4.core.one"
+                },
+                { # main script
+                    part_type_uri:         "dmx.script",
+                    part_cardinality_uri:  "dm4.core.many", # should be one
+                    whole_cardinality_uri: "dm4.core.many",
+                    assoc_type_uri:        "dm4.core.aggregation_def",
+                    view_config_topics: [
+                        { # use a many aggregation to inject a renderer that only supports one part
+                            type_uri: "dm4.webclient.view_config",
+                            composite: {
+                                dm4.webclient.editable: true,
+                                dm4.webclient.multi_renderer_uri: "dmx.script.renderer"
+                            }
+                        }
+                    ]
+                }
+            ],
+            view_config_topics: [
+                {
+                    type_uri: "dm4.webclient.view_config",
+                    composite: {
+                        dm4.webclient.icon: "/org.digitalmemex.dmx-webclient/images/gnome_applications_other.png",
                         dm4.webclient.add_to_create_menu: true,
                         dm4.webclient.is_searchable_unit: true
                     }
