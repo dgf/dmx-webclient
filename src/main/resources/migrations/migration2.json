@@ -1,25 +1,76 @@
-# bootstrap scripts
+# application and script topics
 {
-    topics: [ # a simple interaction example
-        { # an input
+    topics: [
+
+        { # app list view template
             type_uri: "dmx.script",
             composite: {
-                dmx.script.name: "input.js",
-                dmx.script.code: "define(function() {\n    var $input = $('<input>')\n    return {\n        getValue: function() { return $input.val() },\n        show: function($parent) { $parent.append($input) }\n    }\n})"
+                dmx.script.name: "apps.jade",
+                dmx.script.code: "section\n  h1= title\n  ul(data-bind='foreach: apps')\n    li(data-bind='text: value, click: $parent.open')"
             }
         },
-        { # a button that alerts the input value on click
+        { # app list control
             type_uri: "dmx.script",
             composite: {
-                dmx.script.name: "call.js",
-                dmx.script.code: "define(['input'], function(input) {\n    var $call = $('<button>').text('click me').click(function() {\n        alert('hi ' + input.getValue())\n    })\n    return {\n        show: function($parent) { $parent.append($call) }\n    }\n})"
+                dmx.script.name: "apps.coffee",
+                dmx.script.code: "define ['jQuery', 'knockout', 'dm4rest'], ($, ko, dm4) ->\n    getMainScriptPath = (appId) ->\n        dm4.get_topic_related_topics(appId,\n            others_role_type_uri: 'dm4.core.part'\n            others_topic_type_uri: 'dmx.script'\n        , false, 1).items[0].value\n\n    start: ($parent) ->\n\n        appListViewModel =\n            apps: dm4.get_topics('dmx.app', false, true).items\n            open: (app) ->\n                appPath = getMainScriptPath(app.id)\n                # hint: fix require path relation\n                define appPath, ['\/dmx\/script\/' + appPath], (app) -> app\n                require [appPath], (app) -> app.start $('<section>').appendTo $parent\n\n        ko.applyBindings appListViewModel, $('ul', $parent)[0]"
             }
         },
         { # webclient startup
             type_uri: "dmx.script",
             composite: {
-                dmx.script.name: "webclient.js",
-                dmx.script.code: "define(['input', 'call'], function(input, call) {\n    var $dmx = $('#dmx')\n    return {\n        start: function() {\n            input.show($dmx)\n            call.show($dmx)\n        }\n    }\n})"
+                dmx.script.name: "index.js",
+                dmx.script.code: "define(['jQuery', 'jade!apps', 'cs!apps'], function($, view, apps) {\n    return {\n        start: function() {\n            apps.start($('#dmx').append(view({ title: 'Application List' })))\n        }\n    }\n})"
+            }
+        },
+
+        { # hello world script
+            type_uri: "dmx.script",
+            uri: "dmx.examples.hello.js",
+            composite: {
+                dmx.script.name: "hello.js",
+                dmx.script.code: "define(['knockout', 'dm4rest'], function(ko, dm4) {\n    return {\n        start: function($parent) {\n            $parent.html('<h1>hello world<\/h1>')\n        }\n    }\n})"
+            }
+        },
+        { # hello world app
+            type_uri: "dmx.app",
+            composite: {
+                dmx.app.name: "Hello World",
+                dmx.app.path: "hello",
+                dmx.app.description: "<p>the hello world example</p>",
+                dmx.script: [ "ref_uri:dmx.examples.hello.js" ]
+            }
+        },
+
+        { # contact list view template
+            type_uri: "dmx.script",
+            composite: {
+                dmx.script.name: "contacts-view.jade",
+                dmx.script.code: "h1= title\nul(data-bind='foreach: contacts')\n  li(data-bind='text: value, click: $parent.open')"
+            }
+        },
+        { # contact list control
+            type_uri: "dmx.script",
+            composite: {
+                dmx.script.name: "contacts-control.coffee",
+                dmx.script.code: "define ['jQuery', 'knockout', 'dm4rest'], ($, ko, dm4) ->\n\n    getContacts = ->\n        persons = dm4.get_topics('dm4.contacts.person', false, true).items\n        institutions = dm4.get_topics('dm4.contacts.institution', false, true).items\n        persons.concat institutions\n\n    start: ($parent) ->\n        ko.applyBindings \n            contacts: getContacts()\n            open: (contact) -> alert contact.value\n        , $('ul', $parent)[0]"
+            }
+        },
+        { # contact list script
+            type_uri: "dmx.script",
+            uri: "dmx.contacts.list.js",
+            composite: {
+                dmx.script.name: "contacts-list.js",
+                dmx.script.code: "define(['jade!contacts-view', 'cs!contacts-control'],\nfunction(view, control) {\n    return {\n        start: function($parent) {\n            control.start($parent.html(view({ title: 'Contact List' })))\n        }\n    }\n})"
+            }
+        },
+        { # contact list app
+            type_uri: "dmx.app",
+            composite: {
+                dmx.app.name: "Contact List",
+                dmx.app.path: "contacts",
+                dmx.app.description: "<p>list view of all contacts</p>",
+                dmx.script: [ "ref_uri:dmx.contacts.list.js" ]
             }
         }
     ]
