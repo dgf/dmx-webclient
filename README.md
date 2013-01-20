@@ -2,7 +2,7 @@
 
 dynamic JavaScript client on /org.digitalmemex.dmx-webclient/index.html
 
-reveal the webclient.js script topic in the DM4 webclient and start coding
+reveal application topics in the DM4 webclient and start coding
 
 ## Requirements
 
