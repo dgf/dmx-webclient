@@ -11,17 +11,29 @@
 
         render_form : function(model, $parent) {
             // create editor DOM element
-            var editId = 'acEditor' + model.toplevel_object,
+            var editId = 'acEditor' + model.toplevel_object.id,
                 $editor = $('<div>').attr('id', editId).text(model.value)
 
             // style and append it
-            $editor.attr('style', 'position: relative; width: 97%; min-height: 237px;')
+            $editor.attr('style', 'position: relative; width: 97%; height: 437px')
             $parent.append($editor)
 
             // configure editor
             var editor = window.ace.edit(editId)
-            editor.getSession().setMode('ace/mode/javascript')
+            editor.setFontSize('17px')
             editor.setTheme('ace/theme/eclipse')
+
+            // configure mode
+            var name = model.toplevel_object.value
+            if (name.match("\.js$") == '.js') {
+                editor.getSession().setMode('ace/mode/javascript')
+            } else if (name.match("\.coffee$") == '.coffee') {
+                editor.getSession().setMode('ace/mode/coffee')
+            } else if (name.match("\.jade$") == '.jade') {
+                editor.getSession().setMode('ace/mode/jade')
+            } else {
+                editor.getSession().setMode('ace/mode/text')
+            }
 
             // return editor value on submit
             return function () {
