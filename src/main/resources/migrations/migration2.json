@@ -6,21 +6,14 @@
             type_uri: "dmx.script",
             composite: {
                 dmx.script.name: "apps.jade",
-                dmx.script.code: "section\n  h1= title\n  ul(data-bind='foreach: apps')\n    li(data-bind='text: value, click: $parent.open')"
+                dmx.script.code: "ul(data-bind='foreach: apps')\n    li(data-bind='text: value, click: $parent.open')"
             }
         },
         { # app list control
             type_uri: "dmx.script",
             composite: {
                 dmx.script.name: "apps.coffee",
-                dmx.script.code: "define ['jQuery', 'knockout', 'dm4rest'], ($, ko, dm4) ->\n    getMainScriptPath = (appId) ->\n        dm4.get_topic_related_topics(appId,\n            others_role_type_uri: 'dm4.core.part'\n            others_topic_type_uri: 'dmx.script'\n        , false, 1).items[0].value\n\n    start: ($parent) ->\n\n        appListViewModel =\n            apps: dm4.get_topics('dmx.app', false, true).items\n            open: (app) ->\n                appPath = getMainScriptPath(app.id)\n                # hint: fix require path relation\n                define appPath, ['\/dmx\/script\/' + appPath], (app) -> app\n                require [appPath], (app) -> app.start $('<section>').appendTo $parent\n\n        ko.applyBindings appListViewModel, $('ul', $parent)[0]"
-            }
-        },
-        { # webclient startup
-            type_uri: "dmx.script",
-            composite: {
-                dmx.script.name: "index.js",
-                dmx.script.code: "define(['jQuery', 'jade!apps', 'cs!apps'], function($, view, apps) {\n    return {\n        start: function() {\n            apps.start($('#dmx').append(view({ title: 'Application List' })))\n        }\n    }\n})"
+                dmx.script.code: "define ['jQuery', 'knockout', 'dm4rest', 'jade!apps'], ($, ko, dm4, view) ->\n\n    viewModel =\n        apps: dm4.get_topics('dmx.app', true, true).items\n        open: (app) ->\n            appPath = app.composite['dmx.app.path'].value\n            window.open '\/dmx\/app\/' + appPath\n\n    start: ($parent) ->\n        $parent.html view()\n        $list = $('ul', $parent)[0]\n        ko.applyBindings viewModel, $list"
             }
         },
 
@@ -29,7 +22,7 @@
             uri: "dmx.examples.hello.js",
             composite: {
                 dmx.script.name: "hello.js",
-                dmx.script.code: "define(['knockout', 'dm4rest'], function(ko, dm4) {\n    return {\n        start: function($parent) {\n            $parent.html('<h1>hello world<\/h1>')\n        }\n    }\n})"
+                dmx.script.code: "define(function() {\n    return {\n        start: function($parent) {\n            $parent.text(Date.now())\n        }\n    }\n})"
             }
         },
         { # hello world app
@@ -45,23 +38,16 @@
         { # contact list view template
             type_uri: "dmx.script",
             composite: {
-                dmx.script.name: "contacts-view.jade",
-                dmx.script.code: "h1= title\nul(data-bind='foreach: contacts')\n  li(data-bind='text: value, click: $parent.open')"
+                dmx.script.name: "contacts.jade",
+                dmx.script.code: "ul(data-bind='foreach: contacts')\n  li(data-bind='text: value, click: $parent.open')"
             }
         },
         { # contact list control
             type_uri: "dmx.script",
+            uri: "dmx.contacts.coffee",
             composite: {
-                dmx.script.name: "contacts-control.coffee",
-                dmx.script.code: "define ['jQuery', 'knockout', 'dm4rest'], ($, ko, dm4) ->\n\n    getContacts = ->\n        persons = dm4.get_topics('dm4.contacts.person', false, true).items\n        institutions = dm4.get_topics('dm4.contacts.institution', false, true).items\n        persons.concat institutions\n\n    start: ($parent) ->\n        ko.applyBindings \n            contacts: getContacts()\n            open: (contact) -> alert contact.value\n        , $('ul', $parent)[0]"
-            }
-        },
-        { # contact list script
-            type_uri: "dmx.script",
-            uri: "dmx.contacts.list.js",
-            composite: {
-                dmx.script.name: "contacts-list.js",
-                dmx.script.code: "define(['jade!contacts-view', 'cs!contacts-control'],\nfunction(view, control) {\n    return {\n        start: function($parent) {\n            control.start($parent.html(view({ title: 'Contact List' })))\n        }\n    }\n})"
+                dmx.script.name: "contacts.coffee",
+                dmx.script.code: "define ['jQuery', 'knockout', 'dm4rest', 'jade!contacts'], ($, ko, dm4, view) ->\n\n    getContacts = ->\n        persons = dm4.get_topics 'dm4.contacts.person', false, true\n        institutions = dm4.get_topics 'dm4.contacts.institution', false, true\n        persons.items.concat institutions.items\n\n    start: ($parent) ->\n        $parent.html view()\n        ko.applyBindings \n            contacts: getContacts()\n            open: (contact) -> alert contact.value\n        , $('ul', $parent)[0]"
             }
         },
         { # contact list app
@@ -70,7 +56,7 @@
                 dmx.app.name: "Contact List",
                 dmx.app.path: "contacts",
                 dmx.app.description: "<p>list view of all contacts</p>",
-                dmx.script: [ "ref_uri:dmx.contacts.list.js" ]
+                dmx.script: [ "ref_uri:dmx.contacts.coffee" ]
             }
         }
     ]

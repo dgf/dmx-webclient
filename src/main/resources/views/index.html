@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title th:text="'DMX ' + ${title}">dmx app title</title>
+<link rel="icon" href="/de.deepamehta.webclient/images/deepamehta-favicon.png" type="image/png"/>
+<script data-main="/org.digitalmemex.dmx-webclient/script/bootstrap.js" src="/org.digitalmemex.dmx-webclient/script/vendor/require.js"></script>
+</head>
+<body>
+<h1 th:text="${title}">app title</h1>
+<div id="dmx" th:text="${script}">script</div>
+</body>
+</html>

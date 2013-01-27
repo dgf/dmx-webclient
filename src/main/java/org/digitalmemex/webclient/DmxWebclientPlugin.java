@@ -8,11 +8,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import com.sun.jersey.api.view.Viewable;
+
 import de.deepamehta.core.DeepaMehtaObject;
 import de.deepamehta.core.RelatedTopic;
 import de.deepamehta.core.Topic;
 import de.deepamehta.core.model.SimpleValue;
-import de.deepamehta.core.osgi.PluginActivator;
 import de.deepamehta.core.service.ClientState;
 import de.deepamehta.core.service.PluginService;
 import de.deepamehta.core.service.accesscontrol.ACLEntry;
@@ -21,13 +22,18 @@ import de.deepamehta.core.service.accesscontrol.Operation;
 import de.deepamehta.core.service.accesscontrol.UserRole;
 import de.deepamehta.core.service.annotation.ConsumesService;
 import de.deepamehta.plugins.accesscontrol.service.AccessControlService;
+import de.deepamehta.plugins.webactivator.WebActivatorPlugin;
 
 @Path("/dmx")
-public class DmxWebclientPlugin extends PluginActivator {
+public class DmxWebclientPlugin extends WebActivatorPlugin {
 
-    public static final String APP_TYPE = "dmx.app";
+    public static final String APP = "dmx.app";
 
-    public static final String SCRIPT_TYPE = "dmx.script";
+    public static final String APP_NAME = "dmx.app.name";
+
+    public static final String APP_PATH = "dmx.app.path";
+
+    public static final String SCRIPT = "dmx.script";
 
     public static final String SCRIPT_NAME = "dmx.script.name";
 
@@ -39,6 +45,47 @@ public class DmxWebclientPlugin extends PluginActivator {
 
     private boolean isInitialized;
 
+    private String getRequireTag(String name) {
+        if (name.endsWith(".js")) {
+            return name.replaceAll(".js", "");
+        } else if (name.endsWith(".coffee")) {
+            return "cs!" + name.replaceAll(".coffee", "");
+        } else {
+            throw new IllegalArgumentException("only javascript and coffescript supported");
+        }
+    }
+
+    /**
+     * @return index page
+     */
+    @GET
+    @Produces("text/html")
+    public Viewable index(@HeaderParam("Cookie") ClientState cookie) {
+        log.info("open application list");
+        context.setVariable("title", "Digital MemeX Webclient");
+        context.setVariable("script", getRequireTag("apps.coffee"));
+        return view("index");
+    }
+
+    /**
+     * @return index page
+     */
+    @GET
+    @Path("/app/{path}")
+    @Produces("text/html")
+    public Viewable app(@PathParam("path") String path, @HeaderParam("Cookie") ClientState cookie) {
+        log.info("open dmx application " + path);
+        Topic appPath = dms.getTopic(APP_PATH, new SimpleValue(path), true, cookie);
+        RelatedTopic app = appPath.getRelatedTopic("dm4.core.composition", //
+                "dm4.core.part", "dm4.core.whole", APP, true, false, cookie);
+        String script = app.getCompositeValue().getTopics(SCRIPT).get(0) // first
+                .getCompositeValue().getString(SCRIPT_NAME);
+
+        context.setVariable("title", app.getCompositeValue().getString(APP_NAME));
+        context.setVariable("script", getRequireTag(script));
+        return view("index");
+    }
+
     @GET
     @Path("/script/{name}")
     @Produces("text/javascript")
@@ -46,7 +93,7 @@ public class DmxWebclientPlugin extends PluginActivator {
         log.info("load DMX script " + name);
         Topic scriptName = dms.getTopic(SCRIPT_NAME, new SimpleValue(name), true, cookie);
         RelatedTopic script = scriptName.getRelatedTopic("dm4.core.composition", //
-                "dm4.core.part", "dm4.core.whole", SCRIPT_TYPE, true, false, cookie);
+                "dm4.core.part", "dm4.core.whole", SCRIPT, true, false, cookie);
         return script.getCompositeValue().getString(SCRIPT_CODE);
     }
 
@@ -61,6 +108,7 @@ public class DmxWebclientPlugin extends PluginActivator {
 
     @Override
     public void init() {
+        setupRenderContext();
         isInitialized = true;
         configureIfReady();
     }
@@ -72,7 +120,7 @@ public class DmxWebclientPlugin extends PluginActivator {
     }
 
     private void checkACLsOfMigration() {
-        for (String typeUri : new String[] { APP_TYPE, SCRIPT_TYPE }) {
+        for (String typeUri : new String[] { APP, SCRIPT }) {
             checkACLsOfTopics(typeUri);
         }
     }
