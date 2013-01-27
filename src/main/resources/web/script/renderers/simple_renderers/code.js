@@ -16,6 +16,10 @@
             editor.getSession().setMode('ace/mode/coffee')
         } else if (name.match("\.jade$") == '.jade') {
             editor.getSession().setMode('ace/mode/jade')
+        } else if (name.match("\.css$") == '.css') {
+            editor.getSession().setMode('ace/mode/css')
+        } else if (name.match("\.less$") == '.less') {
+            editor.getSession().setMode('ace/mode/less')
         } else {
             editor.getSession().setMode('ace/mode/text')
         }
