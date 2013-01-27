@@ -9,7 +9,7 @@ define('dm4rest', ['/de.deepamehta.webclient/script/util/rest_client.js'], funct
 })
 
 requirejs.config({ baseUrl: '/org.digitalmemex.dmx-webclient/script/vendor' })
-requirejs(['jQuery', 'knockout', 'domReady!', 'cs', 'jade'],
+requirejs(['jQuery', 'knockout', 'domReady!', 'cs', 'jade', 'css', 'lessc', 'less'],
 function ($) { // knockout and require plugins ready
     requirejs.config({ baseUrl: '/dmx/script' })
     $(function() { // jQuery ready => start up

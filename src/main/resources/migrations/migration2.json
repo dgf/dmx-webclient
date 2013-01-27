@@ -9,20 +9,34 @@
                 dmx.script.code: "ul(data-bind='foreach: apps')\n    li(data-bind='text: value, click: $parent.open')"
             }
         },
+        { # app list style
+            type_uri: "dmx.script",
+            composite: {
+                dmx.script.name: "apps.less",
+                dmx.script.code: "@baseUrl: '../../org.digitalmemex.dmx-webclient';\nli { list-style: url('@{baseUrl}/images/gnome_applications_other.png') disc; }"
+            }
+        },
         { # app list control
             type_uri: "dmx.script",
             composite: {
                 dmx.script.name: "apps.coffee",
-                dmx.script.code: "define ['jQuery', 'knockout', 'dm4rest', 'jade!apps'], ($, ko, dm4, view) ->\n\n    viewModel =\n        apps: dm4.get_topics('dmx.app', true, true).items\n        open: (app) ->\n            appPath = app.composite['dmx.app.path'].value\n            window.open '\/dmx\/app\/' + appPath\n\n    start: ($parent) ->\n        $parent.html view()\n        $list = $('ul', $parent)[0]\n        ko.applyBindings viewModel, $list"
+                dmx.script.code: "define ['jQuery', 'knockout', 'dm4rest', 'jade!apps', 'less!apps'], ($, ko, dm4, view) ->\n\n    viewModel =\n        apps: dm4.get_topics('dmx.app', true, true).items\n        open: (app) ->\n            appPath = app.composite['dmx.app.path'].value\n            window.open '\/dmx\/app\/' + appPath\n\n    start: ($parent) ->\n        $parent.html view()\n        $list = $('ul', $parent)[0]\n        ko.applyBindings viewModel, $list"
             }
         },
 
+        { # hello world style
+            type_uri: "dmx.script",
+            composite: {
+                dmx.script.name: "hello.less",
+                dmx.script.code: "span { color: blue }"
+            }
+        },
         { # hello world script
             type_uri: "dmx.script",
             uri: "dmx.examples.hello.js",
             composite: {
                 dmx.script.name: "hello.js",
-                dmx.script.code: "define(function() {\n    return {\n        start: function($parent) {\n            $parent.text(Date.now())\n        }\n    }\n})"
+                dmx.script.code: "define(['less!hello'], function() {\n    return {\n        start: function($parent) {\n            $parent.html($('<span>').text(Date.now()))\n        }\n    }\n})"
             }
         },
         { # hello world app
