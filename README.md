@@ -2,7 +2,7 @@
 
 after installation open the /dmx URL to see a list of applications
 
-reveal the application topics in the DM4 webclient and start coding ;-)
+reveal application topics in the DM4 webclient and start coding ;-)
 
 ## Requirements
 
