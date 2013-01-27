@@ -27,6 +27,11 @@
             <artifactId>deepamehta-webclient</artifactId>
             <version>4.0.14-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>de.deepamehta</groupId>
+            <artifactId>deepamehta-webactivator</artifactId>
+            <version>0.4-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
