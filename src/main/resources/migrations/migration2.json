@@ -2,25 +2,25 @@
 {
     topics: [
 
-        { # app list view template
+        { # apps view template
             type_uri: "dmx.script",
             composite: {
                 dmx.script.name: "apps.jade",
-                dmx.script.code: "ul(data-bind='foreach: apps')\n    li(data-bind='text: value, click: $parent.open')"
+                dmx.script.code: "svg#navigator"
             }
         },
-        { # app list style
+        { # apps style
             type_uri: "dmx.script",
             composite: {
                 dmx.script.name: "apps.less",
-                dmx.script.code: "@baseUrl: '../../org.digitalmemex.dmx-webclient';\nli { list-style: url('@{baseUrl}/images/gnome_applications_other.png') disc; }"
+                dmx.script.code: ".link {\n  stroke: lightgreen;\n  stroke-width: 3;\n}\n"
             }
         },
-        { # app list control
+        { # apps control
             type_uri: "dmx.script",
             composite: {
                 dmx.script.name: "apps.coffee",
-                dmx.script.code: "define ['jQuery', 'knockout', 'dm4rest', 'jade!apps', 'less!apps'], ($, ko, dm4, view) ->\n\n    viewModel =\n        apps: dm4.get_topics('dmx.app', true, true).items\n        open: (app) ->\n            appPath = app.composite['dmx.app.path'].value\n            window.open '\/dmx\/app\/' + appPath\n\n    start: ($parent) ->\n        $parent.html view()\n        $list = $('ul', $parent)[0]\n        ko.applyBindings viewModel, $list"
+                dmx.script.code: "define ['d3', 'dm4rest', 'jade!apps', 'less!apps'], (d3, dm4, view) ->\n    \n    width = 372\n    height = 237\n    layoutIterations = 37\n\n    appTypeUri = 'dmx.app'\n    appTypeIcon = '/de.deepamehta.webclient/images/box-blue.png'\n \n    start: ($parent) ->\n\n        $parent.html view()\n\n        # get application type\n        appType = dm4.get_topic_type appTypeUri\n        appIcon = appType.view_config_topics[0]\n            .composite['dm4.webclient.icon'].value\n\n        # cache application nodes and create a link list\n        appsById = {}\n        links = []\n        nodes = [] # layouted array\n        for a in dm4.get_topic_related_topics(appType.id,\n            others_topic_type_uri: 'dmx.app').items\n            links.push a.assoc\n            app = dm4.get_topic_by_id a.id, true\n            nodes.push app\n            appsById[app.id] = app\n\n        # at least center, push and cache the application type\n        appType.x = width / 2\n        appType.y = height / 2\n        nodes.push appType\n        appsById[appType.id] = appType\n\n        # create svg and configure d3 layout\n        navigator = d3.select('#navigator')\n            .attr('width', width).attr('height', height)\n        force = d3.layout.force().nodes(nodes)\n            .size([width, height]).charge(-200)\n\n        # translate layouted nodes and map link coordinates on each tick\n        force.on 'tick', -> \n            node.attr 'transform', (t) -> 'translate(' + t.x + ', ' + t.y + ')'\n            link.attr('x1', (a) -> appsById[a.role_1.topic_id].x)\n                .attr('y1', (a) -> appsById[a.role_1.topic_id].y)\n                .attr('x2', (a) -> appsById[a.role_2.topic_id].x)\n                .attr('y2', (a) -> appsById[a.role_2.topic_id].y)\n\n        # select and map links and nodes to SVG representations\n        link = navigator.selectAll('.link')\n            .data(links).enter()\n            .append('line')\n            .attr('class', 'link')\n\n        node = navigator.selectAll('.node')\n            .data(nodes).enter()\n            .append('g')\n            .attr('class', 'node')\n\n        node.append('image')\n            .attr('x', -16).attr('y', -16)\n            .attr('width', '32px').attr('height', '32px')\n            .attr 'xlink:href', (t) ->\n                if t is appType then appTypeIcon else appIcon\n\n        node.append('text').attr('dx', 13).attr('dy', '.37em')\n            .text((d) -> d.value[0..17])\n\n        # register node events\n        node.on 'click', (t, i) -> if t isnt appType\n            app = dm4.get_topic_by_id t.id\n            window.open '/dmx/app/' + app.composite['dmx.app.path'].value\n\n        node.on 'mouseover', (t, i) -> if t isnt appType\n            d3.select(this).attr 'style', 'fill: lightblue'\n\n        node.on 'mouseout', (t, i) -> if t isnt appType \n            d3.select(this).attr 'style', 'fill: black'\n\n        # tick the force layouter\n        force.start()\n        force.tick() for i in [0 .. nodes.length * layoutIterations]\n        force.stop()\n"
             }
         },
 
