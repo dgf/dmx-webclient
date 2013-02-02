@@ -1,8 +1,12 @@
 # Digital MemeX Webclient
 
-after installation open the /dmx URL to see a list of applications
+after installation open the /dmx URL to see a view of applications
+
+![DMX application view](https://github.com/dgf/dmx-webclient/raw/master/dmx-screenshot.png)
 
 reveal application topics in the DM4 webclient and start coding ;-)
+
+![DM4 coding view](https://github.com/dgf/dmx-webclient/raw/master/dm4-screenshot.png)
 
 ## Requirements
 
