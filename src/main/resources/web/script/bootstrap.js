@@ -18,6 +18,9 @@ function ($) { // d3, knockout and require plugins ready
     requirejs.config({ baseUrl: '/dmx/script' })
     $(function() { // jQuery ready => start up
         var $dmx = $('#dmx')
-        requirejs([$dmx.text()], function (dmx) { dmx.start($dmx.empty()) })
+        requirejs([$dmx.text()], function (dmx) {
+            dmx.start($dmx.empty())
+            $dmx.show()
+        })
     })
 })
