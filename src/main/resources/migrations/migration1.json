@@ -32,7 +32,7 @@
                         {
                             type_uri: "dm4.webclient.view_config",
                             composite: {
-                                dm4.webclient.editable: true,
+                                dm4.webclient.locked: false,
                                 dm4.webclient.simple_renderer_uri: "dmx.script.code.renderer"
                             }
                         }
@@ -98,7 +98,7 @@
                         { # use a many aggregation to inject a renderer that only supports one part
                             type_uri: "dm4.webclient.view_config",
                             composite: {
-                                dm4.webclient.editable: true,
+                                dm4.webclient.locked: false,
                                 dm4.webclient.multi_renderer_uri: "dmx.script.renderer"
                             }
                         }
