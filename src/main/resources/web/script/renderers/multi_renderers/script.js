@@ -3,7 +3,7 @@
 
   function getMainOfApplication(appId) {
     var scripts = dm4c.restc.get_topic_related_topics(appId, {
-      others_role_type_uri: 'dm4.core.part',
+      others_role_type_uri: 'dm4.core.child',
       others_topic_type_uri: 'dmx.script'
     }, false, 1)
     if (scripts.total_count === 1) {

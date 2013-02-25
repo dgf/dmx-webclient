@@ -77,7 +77,7 @@ public class DmxWebclientPlugin extends WebActivatorPlugin {
         log.info("open dmx application " + path);
         Topic appPath = dms.getTopic(APP_PATH, new SimpleValue(path), true, cookie);
         RelatedTopic app = appPath.getRelatedTopic("dm4.core.composition", //
-                "dm4.core.part", "dm4.core.whole", APP, true, false, cookie);
+                "dm4.core.child", "dm4.core.parent", APP, true, false, cookie);
         String script = app.getCompositeValue().getTopics(SCRIPT).get(0) // first
                 .getCompositeValue().getString(SCRIPT_NAME);
 
@@ -93,7 +93,7 @@ public class DmxWebclientPlugin extends WebActivatorPlugin {
         log.info("load DMX script " + name);
         Topic scriptName = dms.getTopic(SCRIPT_NAME, new SimpleValue(name), true, cookie);
         RelatedTopic script = scriptName.getRelatedTopic("dm4.core.composition", //
-                "dm4.core.part", "dm4.core.whole", SCRIPT, true, false, cookie);
+                "dm4.core.child", "dm4.core.parent", SCRIPT, true, false, cookie);
         return script.getCompositeValue().getString(SCRIPT_CODE);
     }
 

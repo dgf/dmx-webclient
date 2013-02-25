@@ -20,14 +20,14 @@
             label_config: [ "dmx.script.name" ],
             assoc_defs: [
                 {
-                    part_type_uri:         "dmx.script.name",
+                    child_type_uri:         "dmx.script.name",
                     assoc_type_uri:        "dm4.core.composition_def",
-                    part_cardinality_uri:  "dm4.core.one"
+                    child_cardinality_uri:  "dm4.core.one"
                 },
                 {
-                    part_type_uri:         "dmx.script.code",
+                    child_type_uri:         "dmx.script.code",
                     assoc_type_uri:        "dm4.core.composition_def",
-                    part_cardinality_uri:  "dm4.core.one",
+                    child_cardinality_uri:  "dm4.core.one",
                     view_config_topics: [
                         {
                             type_uri: "dm4.webclient.view_config",
@@ -75,24 +75,24 @@
             label_config: [ "dmx.app.name" ],
             assoc_defs: [
                 {
-                    part_type_uri:         "dmx.app.name",
+                    child_type_uri:         "dmx.app.name",
                     assoc_type_uri:        "dm4.core.composition_def",
-                    part_cardinality_uri:  "dm4.core.one"
+                    child_cardinality_uri:  "dm4.core.one"
                 },
                 {
-                    part_type_uri:         "dmx.app.path",
+                    child_type_uri:         "dmx.app.path",
                     assoc_type_uri:        "dm4.core.composition_def",
-                    part_cardinality_uri:  "dm4.core.one"
+                    child_cardinality_uri:  "dm4.core.one"
                 },
                 {
-                    part_type_uri:         "dmx.app.description",
+                    child_type_uri:         "dmx.app.description",
                     assoc_type_uri:        "dm4.core.composition_def",
-                    part_cardinality_uri:  "dm4.core.one"
+                    child_cardinality_uri:  "dm4.core.one"
                 },
                 { # main script
-                    part_type_uri:         "dmx.script",
-                    part_cardinality_uri:  "dm4.core.many", # should be one
-                    whole_cardinality_uri: "dm4.core.many",
+                    child_type_uri:         "dmx.script",
+                    child_cardinality_uri:  "dm4.core.many", # should be one
+                    parent_cardinality_uri: "dm4.core.many",
                     assoc_type_uri:        "dm4.core.aggregation_def",
                     view_config_topics: [
                         { # use a many aggregation to inject a renderer that only supports one part
