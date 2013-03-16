@@ -138,7 +138,7 @@ public class DmxWebclientPlugin extends WebActivatorPlugin {
             String adminName = admin.getSimpleValue().toString();
             acService.setCreator(instance.getId(), adminName);
             acService.setOwner(instance.getId(), adminName);
-            acService.createACL(instance.getId(), new AccessControlList( //
+            acService.setACL(instance.getId(), new AccessControlList( //
                     new ACLEntry(Operation.WRITE, UserRole.OWNER)));
         }
     }

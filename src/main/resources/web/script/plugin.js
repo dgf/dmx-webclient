@@ -1,3 +1,5 @@
+/*global dm4c */
+
 dm4c.add_plugin('dmx.plugin', function () {
     var baseUrl = '/org.digitalmemex.dmx-webclient/script/vendor/'
     dm4c.load_script(baseUrl + 'ace.js')

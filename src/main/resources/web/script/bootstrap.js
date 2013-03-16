@@ -1,4 +1,4 @@
-/*global define, requirejs, $, RESTClient */
+/*global define, requirejs, $, RESTClient*/
 
 define('jQuery', ['/de.deepamehta.webclient/script/vendor/jquery/jquery-1.7.2.min.js'], function () {
     return jQuery // wrap jQuery
