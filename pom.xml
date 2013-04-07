@@ -7,7 +7,7 @@
     <name>Digital MemeX Webclient</name>
     <groupId>org.digitalmemex</groupId>
     <artifactId>dmx-webclient</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <packaging>bundle</packaging>
 
     <parent>
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>de.deepamehta</groupId>
             <artifactId>deepamehta-webactivator</artifactId>
-            <version>0.4</version>
+            <version>0.3.1</version>
         </dependency>
     </dependencies>
 
