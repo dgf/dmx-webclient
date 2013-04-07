@@ -44,8 +44,8 @@
                     type_uri: "dm4.webclient.view_config",
                     composite: {
                         dm4.webclient.icon: "/org.digitalmemex.dmx-webclient/images/media_scripts.png",
-                        dm4.webclient.add_to_create_menu: true,
-                        dm4.webclient.is_searchable_unit: true
+                        dm4.webclient.show_in_create_menu: true,
+                        dm4.webclient.searchable_as_unit: true
                     }
                 }
             ]
@@ -110,8 +110,8 @@
                     type_uri: "dm4.webclient.view_config",
                     composite: {
                         dm4.webclient.icon: "/org.digitalmemex.dmx-webclient/images/gnome_applications_other.png",
-                        dm4.webclient.add_to_create_menu: true,
-                        dm4.webclient.is_searchable_unit: true
+                        dm4.webclient.show_in_create_menu: true,
+                        dm4.webclient.searchable_as_unit: true
                     }
                 }
             ]
