@@ -29,14 +29,14 @@
     render_info: function (pages, $parent, level) {
       dm4c.render.field_label(pages[0].object_type.value, $parent)
       if (pages[0].object.id !== -1) { // ignore empty default page model
-        var main = getMainOfApplication(pages[0].toplevel_object.id)
+        var main = getMainOfApplication(pages[0].parent.object.id)
         $parent.append($('<div>').text(main.value))
       }
     },
 
     render_form: function (pages, $parent, level) {
       var deselectedId = -1,
-        selectedId = getMainOfApplication(pages[0].toplevel_object.id).id,
+        selectedId = getMainOfApplication(pages[0].parent.object.id).id,
         menu = createScriptMenu(selectedId, function (script) {
           // value contains a new selection?
           if (selectedId !== script.value) {

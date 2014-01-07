@@ -3,8 +3,8 @@
 dm4c.add_plugin('dmx.plugin', function () {
     var baseUrl = '/org.digitalmemex.dmx-webclient/script/vendor/'
     dm4c.load_script(baseUrl + 'ace.js')
-    dm4c.load_script(baseUrl + 'ace/mode-css.js')
     dm4c.load_script(baseUrl + 'ace/mode-coffee.js')
+    dm4c.load_script(baseUrl + 'ace/mode-css.js')
     dm4c.load_script(baseUrl + 'ace/mode-jade.js')
     dm4c.load_script(baseUrl + 'ace/mode-javascript.js')
     dm4c.load_script(baseUrl + 'ace/mode-less.js')

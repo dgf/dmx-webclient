@@ -36,7 +36,7 @@
             uri: "dmx.examples.hello.js",
             composite: {
                 dmx.script.name: "hello.js",
-                dmx.script.code: "define(['less!hello'], function() {\n    return {\n        start: function($parent) {\n            $parent.html($('<span>').text(Date.now()))\n        }\n    }\n})"
+                dmx.script.code: "define(['less!hello'], function() {\n    return {\n        start: function($parent) {\n            $parent.html($('<span>').text(new Date().toUTCString()))\n        }\n    }\n})"
             }
         },
         { # hello world app

@@ -21,12 +21,12 @@
             assoc_defs: [
                 {
                     child_type_uri:         "dmx.script.name",
-                    assoc_type_uri:        "dm4.core.composition_def",
+                    assoc_type_uri:         "dm4.core.composition_def",
                     child_cardinality_uri:  "dm4.core.one"
                 },
                 {
                     child_type_uri:         "dmx.script.code",
-                    assoc_type_uri:        "dm4.core.composition_def",
+                    assoc_type_uri:         "dm4.core.composition_def",
                     child_cardinality_uri:  "dm4.core.one",
                     view_config_topics: [
                         {
@@ -76,24 +76,24 @@
             assoc_defs: [
                 {
                     child_type_uri:         "dmx.app.name",
-                    assoc_type_uri:        "dm4.core.composition_def",
+                    assoc_type_uri:         "dm4.core.composition_def",
                     child_cardinality_uri:  "dm4.core.one"
                 },
                 {
                     child_type_uri:         "dmx.app.path",
-                    assoc_type_uri:        "dm4.core.composition_def",
+                    assoc_type_uri:         "dm4.core.composition_def",
                     child_cardinality_uri:  "dm4.core.one"
                 },
                 {
                     child_type_uri:         "dmx.app.description",
-                    assoc_type_uri:        "dm4.core.composition_def",
+                    assoc_type_uri:         "dm4.core.composition_def",
                     child_cardinality_uri:  "dm4.core.one"
                 },
                 { # main script
                     child_type_uri:         "dmx.script",
                     child_cardinality_uri:  "dm4.core.many", # should be one
                     parent_cardinality_uri: "dm4.core.many",
-                    assoc_type_uri:        "dm4.core.aggregation_def",
+                    assoc_type_uri:         "dm4.core.aggregation_def",
                     view_config_topics: [
                         { # use a many aggregation to inject a renderer that only supports one part
                             type_uri: "dm4.webclient.view_config",

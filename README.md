@@ -18,6 +18,6 @@ the preparation for the [Screencast](https://github.com/dgf/dmx-webclient/wiki/S
 
 ## Requirements
 
-  * [DeepaMehta 4](https://github.com/jri/deepamehta) 4.1
-  * [DeepaMehta 4 Web Activator](https://github.com/jri/dm4-webactivator) 0.3.1
+  * [DeepaMehta 4](https://github.com/jri/deepamehta) 4.1.3
+  * [DeepaMehta 4 Web Activator](https://github.com/jri/dm4-webactivator) 0.4.1
 

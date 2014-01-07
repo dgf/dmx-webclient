@@ -2,14 +2,14 @@
 
 (function($, dm4c) {
 
-    function createAceEditor(editId, model) {
+    function createAceEditor(editId, parent) {
         // configure editor
         var editor = window.ace.edit(editId)
         editor.setFontSize('17px')
         editor.setTheme('ace/theme/eclipse')
 
         // configure mode
-        var name = model.toplevel_object.value
+        var name = parent.value
         if (name.match("\.js$") == '.js') {
             editor.getSession().setMode('ace/mode/javascript')
         } else if (name.match("\.coffee$") == '.coffee') {
@@ -36,16 +36,16 @@
 
         render_info : function(model, $parent) {
             dm4c.render.field_label(model, $parent)
-            //$parent.append($('<pre>').text(model.value))
-            var id = 'dmxEditor' + model.toplevel_object.id
+            var id = 'dmxEditor' + model.parent.object.id
             $parent.append(createEditorDiv(id, model.value))
             createAceEditor(id, model).setReadOnly(true)
         },
 
         render_form : function(model, $parent) {
-            var id = 'dmxEditor' + model.toplevel_object.id
+            var parent = model.parent.object,
+                id = 'dmxEditor' + parent.id
             $parent.append(createEditorDiv(id, model.value))
-            var editor = createAceEditor(id, model)
+            var editor = createAceEditor(id, parent)
 
             // return editor value on submit
             return function () {

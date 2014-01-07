@@ -7,37 +7,37 @@
     <name>Digital MemeX :: Webclient</name>
     <groupId>org.digitalmemex</groupId>
     <artifactId>dmx-webclient</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3</version>
     <packaging>bundle</packaging>
 
     <repositories>
         <repository>
             <id>deepamehta-public-repository</id>
-            <url>http://deepamehta.newthinking.net/maven2</url>
+            <url>http://m2.deepamehta.de</url>
         </repository>
     </repositories>
 
     <parent>
         <groupId>de.deepamehta</groupId>
         <artifactId>deepamehta-plugin-parent</artifactId>
-        <version>4.1</version>
+        <version>4.1.3</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>de.deepamehta</groupId>
             <artifactId>deepamehta-accesscontrol</artifactId>
-            <version>4.1</version>
+            <version>4.1.3</version>
         </dependency>
         <dependency>
             <groupId>de.deepamehta</groupId>
             <artifactId>deepamehta-webclient</artifactId>
-            <version>4.1</version>
+            <version>4.1.3</version>
         </dependency>
         <dependency>
             <groupId>de.deepamehta</groupId>
             <artifactId>deepamehta-webactivator</artifactId>
-            <version>0.3.1</version>
+            <version>0.4.1</version>
         </dependency>
     </dependencies>
 
